@@ -63,13 +63,22 @@ class UserService {
         return createHmac("sha256", salt).update(password).digest("hex");
     }
 
-    private static async getUserByEmail(email: string) {
+    public static async getUserByEmail(email: string) {
         console.log("email", email);
         return await prisma.user.findUnique({
             where: {
                 email: email,
             },
         });
+    }
+
+    public static decodeToken(token: string) {
+        try {
+            const decoded = JWT.verify(token, process.env.JWT_SECRET || "custom");
+            return decoded;
+        } catch (error) {
+            throw new Error("Invalid token");
+        }
     }
 }
 

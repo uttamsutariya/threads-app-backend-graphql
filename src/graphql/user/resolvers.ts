@@ -6,6 +6,14 @@ const queries = {
         const res = await UserService.getUserToken(payload);
         return res;
     },
+    getCurrentLoggedInUser: async (_: any, payload: any, context: any) => {
+        if (context && context.email) {
+            const user = await UserService.getUserByEmail(context.email);
+            return user;
+        } else {
+            return {};
+        }
+    },
 };
 
 const mutations = {
